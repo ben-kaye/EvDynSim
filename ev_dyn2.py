@@ -30,7 +30,10 @@ RNG = RND.default_rng()
 
 pops = [[[0], start_pop_size]]
 
+
 start_time = time.time()
+
+### SIMULATION LOOP ###
 
 for k in range(1, n_gens):
     ev2.mut_bact(pops, DFE, PDF, tot_mut_rate, RNG)
