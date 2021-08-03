@@ -1,4 +1,4 @@
-import expanded_ev as EV
+import fixedN_ev as EV
 from numpy import random as RND
 
 
@@ -34,7 +34,7 @@ PDF = EV.get_PDF(DFE)
 tot_mut_rate = EV.mut_rate_total(DFE)
 RNG = RND.default_rng()
 
-pops = [[[0], (1 - nNratio)], [[1], nNratio]]
+pops = [[[0], (1 - nNratio)], [[0,1], nNratio]]
 
 alt_pops = list(pops)
 

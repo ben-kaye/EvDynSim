@@ -84,9 +84,13 @@ def selection_prob(chi):
 
 
 def get_growth(pop, dt, DFE):
-#TODO FIX RETENTION CALC
+#TODO pass Q/V by argument?
     fitness_total = get_fitness(pop, DFE)
-    retention_coeff = selection_prob(DFE[pop[0][-1]][2]) # TODO need to fix, currently takes last magnetism probs want biggest
+
+    magnetism = map(lambda u: DFE[u][3], pop[0])
+
+    retention_coeff = selection_prob(max(magnetism)) # take maximum magnetic contribution? or should it be sum
+    
     QbyV = 1e-2  # per gen
 
     return pop[1]*math.exp(dt*(fitness_total + retention_coeff*QbyV))
