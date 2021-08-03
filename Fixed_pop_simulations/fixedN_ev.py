@@ -1,9 +1,9 @@
 import math
 # FUNCTIONS FOR EV SIM
 
-
 def select_bact(pops, DFE, dt, cull_thresh):
     # implement formula for fixed population
+    # The speed of evolution in large asexual populations (Park, 2010)
 
     new_pops = [get_growth(p, dt, DFE) for p in pops]
     pop_total = sum(new_pops)
@@ -12,19 +12,21 @@ def select_bact(pops, DFE, dt, cull_thresh):
         f_new = new_pops[i]/pop_total
 
         if f_new < cull_thresh:
-            pops[i][1] = 0
+            pops[i][1] = 0 # cull
         else:
             pops[i][1] = f_new  # assign normalised pop
 
 
-def mut_bact(pops, DFE, PDF, tot_mut_rate, RNG):
+def mut_bact(pops, DFE, PDF, tot_size, tot_mut_rate, RNG):
     
     ## KEY parameter ##
     exp_size = 30
 
+    # Need to include total pop size * will make big diff
+
     for i in range(len(pops)):
         bpop = pops[i]
-        exp_m = bpop[1]*tot_mut_rate  # get expected value
+        exp_m = tot_size*bpop[1]*tot_mut_rate  # get expected value
         mut_n = int(RNG.poisson(exp_m))
 
         for k in range(mut_n):
@@ -33,11 +35,10 @@ def mut_bact(pops, DFE, PDF, tot_mut_rate, RNG):
 
             new_genome.sort()
 
-            
             size = RNG.poisson(exp_size)
 
-            freq = size*1e-6  # pretend total pop is at 1,000,000
-
+            freq = size/tot_size
+            
             bpop[1] -= freq
 
             # not sure if want to cast to list

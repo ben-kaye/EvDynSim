@@ -11,11 +11,17 @@ import time
 
 ### PARAMS ###
 
-n_gens = int(1e3)
+n_gens = int(1e3) 
 cull_thresh = 1e-6 # 1 cell per million
-dt = 1
+dt = 1 # in units generation
 
-nNratio = 1e-2
+Npop = 1e6 # affects mutation count (NU)
+
+nNratio = 1e-2 # just for binary pop test
+
+
+# thought I might bundle up the parameters, but no good data structure for this
+#params = {}
 
 DFE = {
     0: ['WT', 0, 0, 0],
@@ -41,7 +47,7 @@ for k in range(1, n_gens):
     EV.select_bact(pops, DFE, dt, cull_thresh)
 
     # mutate
-    # EV.mut_bact(pops, DFE, PDF, tot_mut_rate, RNG)
+    EV.mut_bact(pops, DFE, PDF, Npop, tot_mut_rate, RNG)
 
 elapsed_time = time.time() - start_time
 
