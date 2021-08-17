@@ -5,7 +5,7 @@ nu = [ 0.1 0.7 ]; % prob filtration
 
 QbyV = (N*s')/(N*nu'); % filtration amount {cell frac per gen} 
 
-Ngen = 12;
+Ngen = 5;
 
 QbyV0 = QbyV;
 Nss = 1000;
@@ -23,9 +23,7 @@ it_per_frame = floor(tot_it/Nframes);
 
 Nt = zeros(2, Nframes);
 QbyVt = zeros(1, Nframes);
-
-
-
+gent = zeros(1, Nframes);
 
 for k = 1:Ngen
     
@@ -49,9 +47,10 @@ for k = 1:Ngen
         K = s*[ 1; -1 ] - QbyV*(nu*[ 1; -1 ]);
         
         if mod(it,it_per_frame) == 0
-            it_id = floor(it/tot_it*Nframes);
+            it_id = it/it_per_frame;
             Nt(:, it_id) = N';
             QbyVt(it_id) = QbyV;
+            gent(it_id) = (k - 1) + u*dt;
         end
     end
 %     
@@ -60,12 +59,12 @@ for k = 1:Ngen
 end
 
 figure(1)
-plot(1:Nframes+1, [ N0', Nt ])
+plot([0, gent], [ N0', Nt ])
 xlabel('Time (gens)')
 ylabel('Population count')
 legend('Mutant pop', 'Last fixed pop')
 figure(2)
-plot(1:Nframes+1, [ QbyV0, QbyVt ])
+plot([0, gent], [ QbyV0, QbyVt ])
 xlabel('Time (gens)','interpreter', 'latex', 'fontsize', 14)
 ylabel('$\frac{Q}{V}$, filtration (cell frac per gen)', 'interpreter', 'latex', 'fontsize', 14)
 
