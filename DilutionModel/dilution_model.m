@@ -6,8 +6,6 @@ nu = [ 0.1 0.7 ]; % prob filtration
 QbyV = (N*s')/(N*nu'); % filtration amount {cell frac per gen} 
 
 Ngen = 12;
-Nt = zeros(2, Ngen);
-QbyVt = zeros(1,Ngen);
 
 QbyV0 = QbyV;
 Nss = 1000;
@@ -17,8 +15,25 @@ N0 = N;
 
 K = s*[ 1; -1 ] - QbyV*(nu*[ 1; -1 ]);
 
+
+
+Nframes = 60;
+tot_it = Nss*Ngen;
+it_per_frame = floor(tot_it/Nframes);
+
+Nt = zeros(2, Nframes);
+QbyVt = zeros(1, Nframes);
+
+
+
+
 for k = 1:Ngen
+    
+    
     for u = 1:Nss % defined as derivatives so care must be taken to integrate small steps
+        
+        it = (k - 1)*Nss + u;
+        
         dN1 = (N(1)*(1 - N(1)/N_T)*K)*dt;
         
         if max(N(2) - dN1, 0) == 0
@@ -32,18 +47,25 @@ for k = 1:Ngen
         
         QbyV = (N*s')/(N*nu');
         K = s*[ 1; -1 ] - QbyV*(nu*[ 1; -1 ]);
+        
+        if mod(it,it_per_frame) == 0
+            it_id = floor(it/tot_it*Nframes);
+            Nt(:, it_id) = N';
+            QbyVt(it_id) = QbyV;
+        end
     end
-    
-    QbyVt(k) = QbyV;    
-    Nt(:,k) = N';
+%     
+%     QbyVt(k) = QbyV;    
+%     Nt(:,k) = N';
 end
 
-plot(1:Ngen+1, [ N0', Nt ])
+figure(1)
+plot(1:Nframes+1, [ N0', Nt ])
 xlabel('Time (gens)')
 ylabel('Population count')
 legend('Mutant pop', 'Last fixed pop')
-figure
-plot(1:Ngen+1, [ QbyV0, QbyVt ])
+figure(2)
+plot(1:Nframes+1, [ QbyV0, QbyVt ])
 xlabel('Time (gens)','interpreter', 'latex', 'fontsize', 14)
 ylabel('$\frac{Q}{V}$, filtration (cell frac per gen)', 'interpreter', 'latex', 'fontsize', 14)
 
