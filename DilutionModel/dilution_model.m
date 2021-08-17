@@ -23,7 +23,9 @@ for k = 1:Ngen
         
         if max(N(2) - dN1, 0) == 0
             dN1 = max(N(2), 0);
-        end 
+        elseif max(N(1) + dN1, 0) == 0
+            dN1 = -max(N(1), 0);
+        end
         
         N(2) = N(2) - dN1;         
         N(1) = N(1) + dN1;        
@@ -42,8 +44,8 @@ ylabel('Population count')
 legend('Mutant pop', 'Last fixed pop')
 figure
 plot(1:Ngen+1, [ QbyV0, QbyVt ])
-xlabel('Time (gens)')
-ylabel('$$\frac{Q}{V}$$, filtration (cell frac per gen)')
+xlabel('Time (gens)','interpreter', 'latex', 'fontsize', 14)
+ylabel('$\frac{Q}{V}$, filtration (cell frac per gen)', 'interpreter', 'latex', 'fontsize', 14)
 
 % test analytical solution
 % h = Nt(1,:)./Nt(2,:);
