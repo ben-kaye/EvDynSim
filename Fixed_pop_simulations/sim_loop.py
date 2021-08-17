@@ -11,11 +11,11 @@ import time
 
 ### PARAMS ###
 
-n_gens = int(1e3) 
+n_gens = int(5e5) 
 cull_thresh = 1e-6 # 1 cell per million
 dt = 1 # in units generation
 
-Npop = 1e6 # affects mutation count (NU)
+Npop = 1e7 # affects mutation count (NU)
 
 nNratio = 1e-2 # just for binary pop test
 
@@ -25,7 +25,8 @@ nNratio = 1e-2 # just for binary pop test
 
 DFE = {
     0: ['WT', 0, 0, 0],
-    1: ['fur', -2e-2, 1e-7, 1e-2],
+    1: ['fur', -2e-3, 1e-7, 1e-2],
+    2: ['fur2', -1e-3, 5e-7, 4e-2]
 }
 
 ###      ###
