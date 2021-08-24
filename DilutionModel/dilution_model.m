@@ -1,6 +1,6 @@
 N_T = 1e8;
 N = N_T*[ 0.3, 0.7 ]; % pop size {cells}
-s = [ 0.72 0.7 ]; % fitness (absolute) {per gen}
+s = [ 0.6 0.7 ]; % fitness (absolute) {per gen}
 nu = [ 0.1 0.7 ]; % prob filtration
 
 QbyV = (N*s')/(N*nu'); % filtration amount {cell frac per gen} 
